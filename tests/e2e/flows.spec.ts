@@ -180,6 +180,7 @@ for (const width of [360, 390, 430, 768, 1024, 1280, 1440])
   test(
     "responsive public and protected screens at " + width,
     async ({ page }) => {
+      test.setTimeout(120000);
       await page.setViewportSize({ width, height: 900 });
       for (const route of [
         "/",

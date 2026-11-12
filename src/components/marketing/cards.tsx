@@ -2,6 +2,19 @@ import Link from "next/link";
 import { ArrowUpRight, Check } from "lucide-react";
 import type { PackageData, ResourceData } from "@/server/repository";
 export function PackageCards({ items }: { items: PackageData[] }) {
+  if (!items.length)
+    return (
+      <div className="notice">
+        <h3>Let’s find a format together.</h3>
+        <p>
+          No lesson packages are listed right now. You can still share your
+          goals with Veronica.
+        </p>
+        <Link className="text-link" href="/book">
+          Send a general lesson request ↗
+        </Link>
+      </div>
+    );
   return (
     <div className="grid three">
       {items.map((p, i) => (

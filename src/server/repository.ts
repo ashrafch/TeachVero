@@ -1,3 +1,4 @@
+import { cache } from "react";
 import "server-only";
 import { prisma } from "./db";
 import { initialPackages, initialResources } from "@/lib/content";
@@ -6,7 +7,7 @@ import type { z } from "zod";
 import { packageSchema, resourceSchema } from "@/lib/validation";
 export type PackageData = z.infer<typeof packageSchema>;
 export type ResourceData = z.infer<typeof resourceSchema>;
-export async function packages(): Promise<PackageData[]> {
+export const packages = cache(async (): Promise<PackageData[]> => {
   return (await prisma.package.findMany({ orderBy: { id: "asc" } }))
     .map((p) => packageSchema.parse(p.data))
     .sort(
@@ -18,8 +19,8 @@ export async function packages(): Promise<PackageData[]> {
           ? 99
           : initialPackages.findIndex((p) => p.id === b.id)),
     );
-}
-export async function resources(): Promise<ResourceData[]> {
+});
+export const resources = cache(async (): Promise<ResourceData[]> => {
   return (await prisma.resource.findMany({ orderBy: { id: "asc" } }))
     .map((r) => resourceSchema.parse(r.data))
     .sort(
@@ -31,7 +32,7 @@ export async function resources(): Promise<ResourceData[]> {
           ? 99
           : initialResources.findIndex((r) => r.id === b.id)),
     );
-}
+});
 export async function seed() {
   await prisma.$transaction(async (tx) => {
     for (const p of initialPackages)

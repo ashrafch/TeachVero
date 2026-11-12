@@ -4,6 +4,8 @@ import { ResourceLibrary } from "@/features/resource-library";
 import { LeadForm } from "@/features/forms";
 export const metadata: Metadata = {
   title: "Free Italian learning corner",
+  description:
+    "Practise greetings, café vocabulary and Italian pronunciation with free mini-lessons, worked examples and interactive quizzes.",
   alternates: { canonical: "/learn" },
 };
 export const dynamic = "force-dynamic";

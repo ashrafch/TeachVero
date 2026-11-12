@@ -57,7 +57,7 @@ export default async function Page() {
             There are no scheduled or past lessons yet. Share your goals to
             discuss availability.
           </p>
-          <Link className="button button-primary" href="/contact">
+          <Link className="button button-primary" href="/book">
             Request a lesson ↗
           </Link>
           <h3 className="spaced">My requests</h3>

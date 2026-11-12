@@ -1,3 +1,4 @@
+import { siteIndexable } from "@/lib/seo";
 import localFont from "next/font/local";
 import type { Metadata } from "next";
 import { Header } from "@/components/marketing/header";
@@ -20,6 +21,7 @@ const serif = localFont({
   display: "swap",
 });
 export const metadata: Metadata = {
+  robots: { index: siteIndexable, follow: siteIndexable },
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
   ),

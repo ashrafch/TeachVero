@@ -3,6 +3,8 @@ import Link from "next/link";
 import { lessonTypes } from "@/lib/content";
 export const metadata: Metadata = {
   title: "Personal Italian lessons",
+  description:
+    "Explore Italian lessons for beginners, everyday conversation and travel. Share your goals with Veronica and discuss a personal learning plan.",
   alternates: { canonical: "/lessons" },
 };
 export default function Page() {

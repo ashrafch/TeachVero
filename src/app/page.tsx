@@ -27,8 +27,9 @@ export default async function Home() {
           </h1>
           <p className="hero-description">
             Personal online Italian lessons with Veronica.
-            <br className="desktop-break" /> The life you want to feel a little
-            more part of. From your first words to everyday conversations.
+            <br className="desktop-break" /> Practise the conversations you want
+            to have: meeting someone, ordering a coffee or finding your way in
+            Italy.
           </p>
           <div className="hero-buttons">
             <Link className="button button-primary" href="/book">

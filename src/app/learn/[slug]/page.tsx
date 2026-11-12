@@ -1,3 +1,4 @@
+import { activities } from "@/lib/learning";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { resources } from "@/server/repository";
@@ -22,7 +23,9 @@ export default async function Page({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const r = (await resources()).find((r) => r.id === slug);
+  const articles = await resources();
+  const r = articles.find((r) => r.id === slug);
+  const activity = activities[slug];
   if (!r) notFound();
   return (
     <article className="container article">
@@ -34,6 +37,18 @@ export default async function Page({
       </p>
       <h1>{r.title}</h1>
       <p className="article-lead">{r.excerpt}</p>
+      <p className="sample-label">
+        Sample learning content · teacher review before launch
+      </p>
+      {activity && (
+        <section className="learning-objective">
+          <h2>What you’ll practise</h2>
+          <p>{activity.objective}</p>
+          <p>
+            <strong>Before you start:</strong> {activity.prerequisite}
+          </p>
+        </section>
+      )}
       <div className="article-body">
         {r.body.split("\n\n").map((p, i) => (
           <p key={i}>{p}</p>
@@ -56,7 +71,7 @@ export default async function Page({
       </aside>
       <nav className="related-lessons" aria-label="Related lessons">
         <h3>Keep your Italian going</h3>
-        {(await resources())
+        {articles
           .filter((a) => a.id !== slug)
           .slice(0, 2)
           .map((a) => (

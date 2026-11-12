@@ -2,6 +2,8 @@ import Link from "next/link";
 import { TeacherVisual } from "@/components/marketing/teacher-visual";
 export const metadata = {
   title: "From your feed to your first Italian conversation",
+  description:
+    "Meet Veronica and take your next step in Italian. Try a free mini-lesson or send a personal introduction request.",
   alternates: { canonical: "/ciao" },
 };
 export default async function Page({

@@ -138,6 +138,7 @@ export function InquiryForm({
             <input
               aria-label="Email address"
               type="email"
+              spellCheck={false}
               autoComplete="email"
               {...register("email")}
               aria-invalid={!!errors.email}
@@ -180,9 +181,18 @@ export function InquiryForm({
               </label>
               <label>
                 Your time zone
-                <input {...register("timezone")} />
+                <input
+                  autoComplete="off"
+                  {...register("timezone")}
+                  aria-invalid={!!errors.timezone}
+                  aria-describedby={
+                    errors.timezone ? "timezone-error" : undefined
+                  }
+                />
                 {errors.timezone && (
-                  <small className="field-error">Enter your time zone.</small>
+                  <small id="timezone-error" className="field-error">
+                    Enter your time zone.
+                  </small>
                 )}
               </label>
             </div>
@@ -217,7 +227,11 @@ export function InquiryForm({
           </label>
         </div>
         <label className="checkbox">
-          <input type="checkbox" {...register("consent")} />
+          <input
+            type="checkbox"
+            {...register("consent")}
+            aria-invalid={!!errors.consent}
+          />
           <span>
             I agree to my details being used to respond to this inquiry.{" "}
             <Link href="/legal/privacy">Privacy notice</Link>.
@@ -313,6 +327,7 @@ export function LeadForm() {
           <input
             aria-label="Your email"
             type="email"
+            spellCheck={false}
             autoComplete="email"
             {...register("email")}
           />
