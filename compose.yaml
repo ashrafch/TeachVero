@@ -1,0 +1,39 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: teachvero
+      POSTGRES_PASSWORD: local_only
+      POSTGRES_DB: teachvero
+    ports:
+      - "127.0.0.1:55432:5432"
+    volumes:
+      - teachvero_pg:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U teachvero"]
+      interval: 5s
+      retries: 10
+  web:
+    build: .
+    command:
+      [
+        "sh",
+        "-c",
+        "npx prisma migrate deploy && npx tsx scripts/seed.ts && npx next dev --webpack --hostname 0.0.0.0",
+      ]
+    ports:
+      - "127.0.0.1:3000:3000"
+    environment:
+      DATABASE_URL: postgresql://teachvero:local_only@postgres:5432/teachvero
+      NEXTAUTH_URL: http://localhost:3000
+      NEXT_PUBLIC_SITE_URL: http://localhost:3000
+      NEXTAUTH_SECRET: teachvero-local-container-secret-do-not-deploy
+      WATCHPACK_POLLING: "true"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./src:/app/src
+      - ./public:/app/public
+volumes:
+  teachvero_pg:

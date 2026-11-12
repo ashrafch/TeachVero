@@ -1,0 +1,87 @@
+import { NextResponse } from "next/server";
+import { currentUser } from "@/server/auth";
+import { prisma } from "@/server/db";
+import { validOrigin } from "@/server/security";
+import { packageSchema, resourceSchema, profileSchema } from "@/lib/validation";
+import { z } from "zod";
+export async function POST(req: Request) {
+  if (!validOrigin(req))
+    return NextResponse.json({ error: "Invalid origin" }, { status: 403 });
+  const user = await currentUser();
+  if (!user)
+    return NextResponse.json({ error: "Sign in required" }, { status: 401 });
+  try {
+    const text = await req.text();
+    if (text.length > 30000)
+      return NextResponse.json({ error: "Request too large" }, { status: 413 });
+    const body = JSON.parse(text);
+    if (body.kind === "profile") {
+      const data = profileSchema.parse(body.data);
+      await prisma.user.update({
+        where: { id: user.id },
+        data: { name: data.name, profile: data },
+      });
+      return NextResponse.json({ ok: true });
+    }
+    if (user.role !== "ADMIN")
+      return NextResponse.json(
+        { error: "Teacher access required" },
+        { status: 403 },
+      );
+    await prisma.$transaction(async (tx) => {
+      if (body.kind === "package") {
+        const data = packageSchema.parse(body.data);
+        if (body.remove) {
+          if (
+            await tx.bookingRequest.count({
+              where: { data: { path: ["packageId"], equals: data.id } },
+            })
+          )
+            throw new Error("Package has inquiries; edit it instead.");
+          await tx.package.delete({ where: { id: data.id } });
+        } else
+          await tx.package.upsert({
+            where: { id: data.id },
+            create: { id: data.id, data },
+            update: { data },
+          });
+      } else if (body.kind === "resource") {
+        const data = resourceSchema.parse(body.data);
+        if (body.remove) await tx.resource.delete({ where: { id: data.id } });
+        else
+          await tx.resource.upsert({
+            where: { id: data.id },
+            create: { id: data.id, data },
+            update: { data },
+          });
+      } else if (body.kind === "status") {
+        const data = z
+          .object({
+            id: z.string(),
+            status: z.enum(["NEW", "REVIEWED", "CONTACTED", "CLOSED"]),
+          })
+          .parse(body.data);
+        await tx.bookingRequest.update({
+          where: { id: data.id },
+          data: { status: data.status },
+        });
+      } else throw new Error("Unknown operation");
+      await tx.auditLog.create({
+        data: {
+          actorId: user.id,
+          action: body.kind + (body.remove ? ":delete" : ":save"),
+          targetId: body.data.id,
+        },
+      });
+    });
+    return NextResponse.json({ ok: true });
+  } catch {
+    return NextResponse.json(
+      {
+        error:
+          "Could not save. Check all fields. Packages with inquiries cannot be removed.",
+      },
+      { status: 400 },
+    );
+  }
+}

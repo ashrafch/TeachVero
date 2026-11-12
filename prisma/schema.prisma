@@ -1,0 +1,45 @@
+generator client {
+ provider = "prisma-client-js"
+}
+datasource db {
+ provider = "postgresql"
+ url = env("DATABASE_URL")
+}
+model User {
+ id String @id @default(cuid())
+ email String @unique
+ name String
+ passwordHash String
+ role String @default("STUDENT")
+ profile Json @default("{}")
+ createdAt DateTime @default(now())
+}
+model Package {
+ id String @id
+ data Json
+}
+model Resource {
+ id String @id
+ data Json
+}
+model BookingRequest {
+ id String @id @default(cuid())
+ email String
+ data Json
+ status String @default("NEW")
+ createdAt DateTime @default(now())
+ @@index([email])
+}
+model Lead {
+ id String @id @default(cuid())
+ email String @unique
+ data Json
+ createdAt DateTime @default(now())
+}
+model AuditLog {
+ id String @id @default(cuid())
+ actorId String
+ action String
+ targetId String
+ createdAt DateTime @default(now())
+}
