@@ -7,6 +7,8 @@ export default defineConfig({
   timeout: 60000,
   expect: { timeout: 12000 },
   use: {
+    actionTimeout: 15000,
+    navigationTimeout: 30000,
     baseURL: process.env.TEST_BASE_URL || "http://localhost:3000",
     trace: "retain-on-failure",
   },

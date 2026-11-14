@@ -1,5 +1,13 @@
 # Security and privacy engineering audit — 12 November 2026
 
+## Recovery addendum — 13 November 2026
+
+New assets: teacher-only StudentRecord and Lesson.teacherNotes, student-visible Lesson.studentSummary, Enrollment balances and CreditEntry ledger. `/api/teaching` requires same-origin and the current database ADMIN role, bounded JSON, Zod validation and per-actor limits. Student queries filter by authenticated user ID and select only permitted columns. Browser tests verify private-note exclusion and forbidden mutations; PostgreSQL tests verify concurrency, overlap, expiry, cancellation and completion. No sensitive data is added to analytics or audit payloads.
+
+P1 fixed: final-credit and double-booking races are serialized by a shared transaction advisory lock; unique references and guarded transitions prevent duplicate grant/reservation/return. P2 fixed: public repeat guide submissions preserve private follow-up notes and status under the same lock. P2 fixed: invalid saved timezone values fall back safely; profile updates validate IANA timezone names.
+
+Dependency scan `npm.cmd audit --omit=dev --audit-level=high` on the restored lockfile reported zero vulnerabilities. This is a dependency scan, not a penetration test. Account verification/recovery, shared production abuse limits, legal retention and real providers remain launch blockers. Payment paths remain disabled. Existing notes below describe the earlier implementation where superseded.
+
 Scope: local MVP; not a penetration-test certification or legal compliance opinion. Sources reviewed: auth, password hashing, origin/rate controls, inquiry/manage routes, repository, Prisma schema, account/admin UI and Compose. No real credentials or personal records were printed.
 
 ## Data and trust boundaries

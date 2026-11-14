@@ -29,9 +29,12 @@ test("preview metadata, canonical routes and sitemap boundaries", async ({
       "content",
       /noindex/,
     );
-    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
-      "href",
-      "http://localhost:3000" + (route === "/" ? "/" : route),
+    const canonical = await page
+      .locator('link[rel="canonical"]')
+      .getAttribute("href");
+    // URL serialization may omit the root slash; both represent the same canonical URL.
+    expect(new URL(canonical!).href).toBe(
+      new URL(route, "http://localhost:3000").href,
     );
     expect(await page.locator("h1").count()).toBe(1);
   }

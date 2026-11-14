@@ -4,21 +4,6 @@ import Link from "next/link";
 export function Footer() {
   return (
     <>
-      <section className="closing">
-        <div className="container closing-inner">
-          <div>
-            <p className="eyebrow">YOUR NEXT CHAPTER STARTS WITH CIAO</p>
-            <h2>
-              Make Italian part
-              <br />
-              of your everyday.
-            </h2>
-          </div>
-          <Link className="button button-primary" href="/book">
-            Find your starting point <span>↗</span>
-          </Link>
-        </div>
-      </section>
       <footer className="container footer">
         <div>
           <Link href="/" className="wordmark">
@@ -32,6 +17,8 @@ export function Footer() {
           <Link href="/about">Meet your teacher</Link>
           <Link href="/learn">A little Italian, free</Link>
           <Link href="/contact">Get in touch</Link>
+          <Link href="/faq">Lesson questions</Link>
+          <Link href="/blog">Notes on learning Italian</Link>
           <Link href="/login">Student & teacher space</Link>
         </div>
         <div className="footer-links">

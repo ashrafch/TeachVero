@@ -1,6 +1,6 @@
 {
   "name": "teachvero",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
     "dev": "next dev --webpack --hostname 127.0.0.1",
@@ -9,12 +9,14 @@
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
+    "test:integration": "vitest run --config vitest.integration.config.ts",
     "test:e2e": "playwright test",
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate deploy",
     "db:seed": "tsx scripts/seed.ts",
     "dev:container": "prisma migrate deploy && tsx scripts/seed.ts && next dev --webpack --hostname 0.0.0.0",
-    "format": "prettier --write src tests scripts docs README.md *.config.* package.json tsconfig.json compose.yaml"
+    "format": "prettier --write src tests scripts docs README.md *.config.* package.json tsconfig.json compose.yaml",
+    "workflow:check": "node scripts/check-workflow.mjs"
   },
   "dependencies": {
     "@fontsource/dm-sans": "^5.3.0",

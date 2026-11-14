@@ -28,6 +28,7 @@ try {
           width +
           ".png",
         fullPage: true,
+        caret: "initial",
       });
     }
   }
