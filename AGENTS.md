@@ -82,3 +82,20 @@ Build TeachVero, a polished, mobile-first Italian-language teaching business pla
 - Keep a `docs/IMPLEMENTATION_STATUS.md` with done, demo-only, blocked and next items. Update it as features are completed.
 - Never print secrets, disable security controls, or change enterprise-managed security policies.
 - Do not run destructive git commands, create remotes, push, or deploy without the user's approval.
+
+## Git delivery workflow
+- Follow `docs/GIT_WORKFLOW.md` for every completed task. Inspect existing changes, work on a purpose-named branch and preserve unrelated edits.
+- After a complete vertical slice passes relevant checks, update status/changelog and create a descriptive Conventional Commit. Report the branch, hash, candidate version and actual validation results.
+- Keep package/lockfile versions synchronized. Bump versions for product milestones, not every edit; never tag an unapproved candidate as a release.
+- Prepare a concrete PR description using `.github/PULL_REQUEST_TEMPLATE.md`. Publish branches/PRs only within the user's authorized destination and scope; do not infer permission to merge, release or deploy from permission to commit.
+- The established default branch is `master`; do not introduce a parallel long-lived development branch or rename remotes as routine setup.
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+## This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->
