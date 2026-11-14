@@ -1,3 +1,5 @@
 @import "tailwindcss";
 @import "./styles/foundation.css";
 @import "./styles/public.css";
+@import "./styles/workspace.css";
+@import "./styles/portal.css";

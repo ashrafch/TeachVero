@@ -1,5 +1,13 @@
 # Architecture
 
+## Recovery extension — 13 November 2026
+
+User remains the login identity. StudentRecord separates teacher-only level/status/preferences/notes from the editable student profile. Enrollment snapshots a manually allocated package and its credit balance/expiry. Lesson belongs to Enrollment and separates studentSummary from teacherNotes. CreditEntry is the append-only application ledger; allocation, reservation and cancellation have unique references.
+
+The `/api/teaching` boundary checks same-origin, current database role, rate limit, request size and Zod input before entering a transaction. All teaching writers take the same PostgreSQL transaction advisory lock, serializing this single-teacher schedule and balance changes. Student queries scope by current user ID and explicitly omit private columns. Content/booking APIs retain their existing checks.
+
+Canonical `/learn/[slug]` articles also serve blog and free-learning entry aliases; the lesson catalog has individual `/lessons/[slug]` pages. No duplicate article CMS is introduced. PostgreSQL integration tests complement browser journeys. See FEATURE_STATUS.md for current limitations; the original design notes below are historical where superseded.
+
 Next.js 16 App Router, React 19, strict TypeScript, Tailwind v4, Radix/shadcn-style Button, Motion, React Hook Form/Zod and Auth.js (NextAuth v4 credentials/JWT). Locally bundled OFL fonts use next/font/local. Custom inline vector imagery avoids invented teacher portraits.
 
 The requested deployment environment is Docker Desktop: web (Node 24) + PostgreSQL 17, with a persistent named volume. No SQLite or browser persistence fallback is used. Public server components query ingested database content through server-only repository modules. Prisma provides transactions and immutable migrations.

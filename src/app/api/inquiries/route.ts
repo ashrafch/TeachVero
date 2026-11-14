@@ -23,10 +23,20 @@ export async function POST(req: Request) {
           { error: "Check your name, email and consent." },
           { status: 400 },
         );
-      const lead = await prisma.lead.upsert({
-        where: { email: result.data.email },
-        create: { email: result.data.email, data: result.data },
-        update: { data: result.data },
+      const lead = await prisma.$transaction(async (tx) => {
+        // Preserve teacher follow-up fields when someone requests the guide again.
+        // Share the lock with the teacher writer to prevent lost updates.
+        await tx.$executeRaw`SELECT pg_advisory_xact_lock(71643001)`;
+        const existing = await tx.lead.findUnique({
+          where: { email: result.data.email },
+        });
+        const previous = existing?.data as
+          Record<string, string | boolean> | undefined;
+        return tx.lead.upsert({
+          where: { email: result.data.email },
+          create: { email: result.data.email, data: result.data },
+          update: { data: { ...previous, ...result.data } },
+        });
       });
       return NextResponse.json(
         {

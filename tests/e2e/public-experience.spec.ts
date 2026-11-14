@@ -59,6 +59,7 @@ test("social intro retains campaign through a real saved request", async ({
     .fill("TeachVero-demo-2026!");
   await page.getByRole("button", { name: "Come on in" }).click();
   await expect(page).toHaveURL(/admin/);
+  await page.getByRole("link", { name: "Inquiries", exact: true }).click();
   await expect(
     page.locator(".request-card").filter({ hasText: campaign }),
   ).toContainText("social@example.test");

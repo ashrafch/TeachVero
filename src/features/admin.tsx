@@ -39,7 +39,7 @@ export function StatusControl({ id, status }: { id: string; status: string }) {
             }
           }}
         >
-          {["NEW", "REVIEWED", "CONTACTED", "CLOSED"].map((s) => (
+          {["NEW", "REVIEWED", "CONTACTED", "ACCEPTED", "REJECTED", "CLOSED"].map((s) => (
             <option key={s}>{s}</option>
           ))}
         </select>

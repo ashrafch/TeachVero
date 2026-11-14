@@ -3,6 +3,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useRef, useState } from "react";
 import { Menu, X, ArrowUpRight } from "lucide-react";
+import { useIntroHref } from "../learning-goal-provider";
 const links = [
   ["Meet Veronica", "/about"],
   ["Lessons", "/lessons"],
@@ -13,6 +14,7 @@ export function Header() {
   const [open, setOpen] = useState(false);
   const toggle = useRef<HTMLButtonElement>(null);
   const path = usePathname();
+  const introHref = useIntroHref(path);
   return (
     <header
       onKeyDown={(e) => {
@@ -43,7 +45,7 @@ export function Header() {
           <Link className="login-link" href="/login">
             Student space
           </Link>
-          <Link className="button button-dark header-cta" href="/book">
+          <Link className="button button-dark header-cta" href={introHref}>
             Request an intro <ArrowUpRight size={16} />
           </Link>
           <button
@@ -70,7 +72,7 @@ export function Header() {
           {[
             ...links,
             ["Student space", "/login"],
-            ["Request an intro", "/book"],
+            ["Request an intro", introHref],
           ].map(([name, url]) => (
             <Link key={url} href={url} onClick={() => setOpen(false)}>
               {name}

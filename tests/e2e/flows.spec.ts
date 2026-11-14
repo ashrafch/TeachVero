@@ -34,6 +34,10 @@ test("package to validated inquiry to persisted teacher review", async ({
   await page.getByRole("button", { name: "Send my inquiry" }).click();
   await expect(page.getByRole("heading", { name: /Grazie/ })).toBeVisible();
   await login(page, true);
+  await page
+    .getByRole("navigation", { name: "Teacher workspace sections" })
+    .getByRole("link", { name: "Inquiries", exact: true })
+    .click();
   const card = page
     .locator(".request-card")
     .filter({ has: page.getByRole("heading", { name, exact: true }) });
@@ -63,6 +67,7 @@ test("authorization, own profile persistence and no private data leakage", async
     data: { kind: "status", data: { id: "none", status: "CLOSED" } },
   });
   expect(blocked.status()).toBe(403);
+  await page.getByRole("link", { name: "My profile", exact: true }).click();
   await page
     .getByLabel("My Italian goal")
     .fill("Order my first coffee in Italian");
@@ -118,6 +123,9 @@ test("resource, quiz, lead guide and abuse boundaries", async ({
 });
 test("teacher package and article CRUD persist and audit", async ({ page }) => {
   await login(page, true);
+  await page
+    .getByRole("link", { name: "Website content", exact: true })
+    .click();
   const section = page.locator(".admin-section").filter({
     has: page.getByRole("heading", { name: "Packages", exact: true }),
   });
@@ -168,7 +176,7 @@ test("teacher package and article CRUD persist and audit", async ({ page }) => {
   await expect(
     page.getByRole("heading", { name: "Integration test article" }),
   ).toBeVisible();
-  await page.goto("/admin");
+  await page.goto("/admin?view=content");
   await resources
     .getByText("Integration test article", { exact: true })
     .click();
@@ -223,6 +231,7 @@ for (const width of [360, 390, 430, 768, 1024, 1280, 1440])
               (route.slice(1) || "home") +
               ".png",
             fullPage: true,
+            caret: "initial",
           });
       }
       await login(page);
@@ -234,6 +243,7 @@ for (const width of [360, 390, 430, 768, 1024, 1280, 1440])
       await page.screenshot({
         path: "test-results/screenshots/" + width + "-dashboard.png",
         fullPage: true,
+        caret: "initial",
       });
       await page.getByRole("button", { name: "Sign out", exact: true }).click();
       await login(page, true);
@@ -245,6 +255,7 @@ for (const width of [360, 390, 430, 768, 1024, 1280, 1440])
       await page.screenshot({
         path: "test-results/screenshots/" + width + "-admin.png",
         fullPage: true,
+        caret: "initial",
       });
     },
   );
@@ -283,6 +294,7 @@ test("fixed mobile CTA stays clear of forms and protected workspaces", async ({
         await page.screenshot({
           path: "test-results/screenshots/" + width + "-contact-no-overlap.png",
           fullPage: true,
+          caret: "initial",
         });
     }
   }

@@ -1,4 +1,20 @@
-# Implementation status — 12 November 2026
+# Implementation status — recovery on 13 November 2026
+
+## Design refresh — 13 November 2026
+
+Implemented: goal-driven homepage with phrase preview; independent teacher/student app shell; URL-backed workspace views; searchable student directory; dedicated student profile and practice views; responsive navigation controls. Core domain/API behavior retained. Static checks, production build, 32 unit tests, 3 PostgreSQL integration tests and 2 focused portal browser scenarios passed. All 31 browser scenarios now have passing executions across batches; final evidence is recorded in TEST_REPORT.md. The selected goal also follows header and mobile shortcut CTAs. Missing authentic portrait, prices and external integrations remain demo-only/pending.
+
+Current authoritative status: [FEATURE_STATUS.md](FEATURE_STATUS.md). Executed recovery checks: [TEST_REPORT.md](TEST_REPORT.md).
+
+The restored app now includes persisted student administration, private teaching notes, manual package allocations, transactional credit ledger, internal scheduling/rescheduling/cancellation/completion, and actual student lesson/balance/history views. Public lesson details, FAQ, blog and canonical aliases are added. PostgreSQL and the host dev server are running for local validation at http://localhost:3000.
+
+Recovery verification: 32 unit tests, 3 real PostgreSQL integration tests, 29 browser scenarios with passing full/focused executions, lint, strict types and production build. Screenshots were inspected for public desktop/mobile home, the mobile student dashboard and teacher student forms. Exact execution batches and repaired failures are in TEST_REPORT.md.
+
+External payments/calendar/email, secure production onboarding, real business content and legal approval remain pending. No remote write or deployment was performed. The recovered repository already has origin `https://github.com/ashrafch/TeachVero.git`.
+
+## Historical status — 12 November 2026 (superseded)
+
+The notes below are retained as pre-recovery history. In particular their missing scheduling/credit features, remote information and test totals no longer describe the current workspace.
 
 ## Implemented
 

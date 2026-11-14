@@ -13,6 +13,8 @@ model User {
  role String @default("STUDENT")
  profile Json @default("{}")
  createdAt DateTime @default(now())
+ studentRecord StudentRecord?
+ enrollments Enrollment[]
 }
 model Package {
  id String @id
@@ -42,4 +44,55 @@ model AuditLog {
  action String
  targetId String
  createdAt DateTime @default(now())
+}
+
+model StudentRecord {
+ userId String @id
+ user User @relation(fields: [userId], references: [id], onDelete: Restrict)
+ level String @default("Not assessed")
+ status String @default("ACTIVE")
+ preferences String @default("")
+ notes String @default("")
+ updatedAt DateTime @updatedAt
+}
+
+model Enrollment {
+ id String @id @default(cuid())
+ userId String
+ user User @relation(fields: [userId], references: [id], onDelete: Restrict)
+ packageId String
+ label String
+ credits Int
+ remaining Int
+ expiresAt DateTime?
+ reference String @unique
+ createdAt DateTime @default(now())
+ lessons Lesson[]
+ entries CreditEntry[]
+ @@index([userId])
+}
+
+model Lesson {
+ id String @id @default(cuid())
+ enrollmentId String
+ enrollment Enrollment @relation(fields: [enrollmentId], references: [id], onDelete: Restrict)
+ startsAt DateTime
+ endsAt DateTime
+ status String @default("SCHEDULED")
+ studentSummary String @default("")
+ teacherNotes String @default("")
+ reference String @unique
+ createdAt DateTime @default(now())
+ @@index([startsAt, endsAt])
+}
+
+model CreditEntry {
+ id String @id @default(cuid())
+ enrollmentId String
+ enrollment Enrollment @relation(fields: [enrollmentId], references: [id], onDelete: Restrict)
+ delta Int
+ reason String
+ reference String @unique
+ createdAt DateTime @default(now())
+ @@index([enrollmentId])
 }

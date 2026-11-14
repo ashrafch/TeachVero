@@ -3,6 +3,8 @@ import localFont from "next/font/local";
 import type { Metadata } from "next";
 import { Header } from "@/components/marketing/header";
 import { Footer } from "@/components/marketing/footer";
+import { PublicChrome } from "@/components/public-chrome";
+import { LearningGoalProvider } from "@/components/learning-goal-provider";
 import "./globals.css";
 const sans = localFont({
   src: [
@@ -46,28 +48,35 @@ export default function RootLayout({
   return (
     <html lang="en" data-scroll-behavior="smooth">
       <body className={sans.variable + " " + serif.variable}>
-        <a className="skip-link" href="#main">
-          Skip to content
-        </a>
-        <div className="demo-banner">
-          DEMO PREVIEW <span>·</span> Inquiries are saved. Booking, payments and
-          email are not active.
-        </div>
-        <Header />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "WebSite",
-              name: "TeachVero",
-              url: process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
-              inLanguage: "en",
-            }).replace(/</g, "\u003c"),
-          }}
-        />
-        <main id="main">{children}</main>
-        <Footer />
+        <LearningGoalProvider>
+          <a className="skip-link" href="#main">
+            Skip to content
+          </a>
+          <div className="demo-banner">
+            DEMO PREVIEW <span>·</span> Inquiries are saved. Booking, payments
+            and email are not active.
+          </div>
+          <PublicChrome>
+            <Header />
+          </PublicChrome>
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "WebSite",
+                name: "TeachVero",
+                url:
+                  process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
+                inLanguage: "en",
+              }).replace(/</g, "\u003c"),
+            }}
+          />
+          <main id="main">{children}</main>
+          <PublicChrome>
+            <Footer />
+          </PublicChrome>
+        </LearningGoalProvider>
       </body>
     </html>
   );

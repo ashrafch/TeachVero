@@ -1,0 +1,82 @@
+.workspace-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 24px 0;
+}
+.workspace-nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 8px 18px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+}
+.workspace-nav a:hover {
+  background: var(--lavender);
+}
+.record-details {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 16px 22px;
+  margin: 14px 0;
+  background: #fffdf9;
+}
+.record-details summary {
+  cursor: pointer;
+  align-content: center;
+  overflow-wrap: anywhere;
+}
+.record-details[open] {
+  border-color: var(--ink);
+}
+.teaching-form {
+  max-width: 720px;
+}
+.teaching-form p.notice {
+  margin-bottom: 24px;
+}
+.teaching-form label {
+  font-size: 14px;
+}
+.teaching-form label small {
+  font-size: 12px;
+}
+.teaching-form input,
+.teaching-form select,
+.teaching-form textarea {
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+}
+.teaching-form textarea {
+  min-height: 110px;
+}
+.teaching-form [role="status"] {
+  min-height: 24px;
+  margin-top: 14px;
+}
+.date-field {
+  margin-bottom: 22px;
+}
+.date-field label {
+  margin-bottom: 4px;
+}
+.date-field > small {
+  color: var(--muted);
+  font-size: 12px;
+}
+.request-card,
+.audit-row {
+  overflow-wrap: anywhere;
+}
+@media (max-width: 600px) {
+  .record-details {
+    padding: 14px;
+  }
+  .teaching-form .form-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+}

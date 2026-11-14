@@ -37,8 +37,8 @@ export default function Page() {
             </div>
             <Link
               href={
-                "/book?goal=" +
-                ["beginner", "conversation", "travel", "exam"][i]
+                "/lessons/" +
+                ["beginning", "conversation", "tailored", "exam"][i]
               }
               className="button button-outline"
             >

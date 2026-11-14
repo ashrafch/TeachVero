@@ -63,7 +63,14 @@ export async function POST(req: Request) {
           const data = z
             .object({
               id: z.string(),
-              status: z.enum(["NEW", "REVIEWED", "CONTACTED", "CLOSED"]),
+              status: z.enum([
+                "NEW",
+                "REVIEWED",
+                "CONTACTED",
+                "ACCEPTED",
+                "REJECTED",
+                "CLOSED",
+              ]),
             })
             .parse(body.data);
           await tx.bookingRequest.update({

@@ -3,6 +3,23 @@ const config: NextConfig = {
   poweredByHeader: false,
   devIndicators: false,
   serverExternalPackages: ["@prisma/client"],
+  async redirects() {
+    return [
+      { source: "/packages", destination: "/pricing", permanent: false },
+      { source: "/free-learning", destination: "/learn", permanent: true },
+      {
+        source: "/free-learning/:slug",
+        destination: "/learn/:slug",
+        permanent: true,
+      },
+      { source: "/blog/:slug", destination: "/learn/:slug", permanent: true },
+      ...["privacy", "cookies", "terms"].map((slug) => ({
+        source: "/" + slug,
+        destination: "/legal/" + slug,
+        permanent: true,
+      })),
+    ];
+  },
   async headers() {
     return [
       {
